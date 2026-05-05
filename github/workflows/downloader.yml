@@ -1,0 +1,29 @@
+name: Cloud File Downloader
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: 'ضع رابط الملف المباشر هنا'
+        required: true
+      file_name:
+        description: 'اكتب اسم الملف مع الصيغة (مثال: video.mp4)'
+        required: true
+
+jobs:
+  download_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: جلب المستودع
+        uses: actions/checkout@v4
+
+      - name: تحميل الملف من الرابط
+        run: |
+          curl -L -o "${{ github.event.inputs.file_name }}" "${{ github.event.inputs.file_url }}"
+          
+      - name: حفظ ورفع الملف للمستودع
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add "${{ github.event.inputs.file_name }}"
+          git commit -m "تم سحب الملف: ${{ github.event.inputs.file_name }}"
+          git push
