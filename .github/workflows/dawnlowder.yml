@@ -27,3 +27,4 @@ jobs:
           git add "${{ github.event.inputs.file_name }}"
           git commit -m "تم سحب الملف: ${{ github.event.inputs.file_name }}"
           git push
+
